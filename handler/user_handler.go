@@ -38,7 +38,6 @@ func (u UserHandler) HandleSignUp(c echo.Context) error {
 	}
 
 	hash := securiry.HashAndSalt([]byte(req.Password))
-	role := model.MEMBER.String()
 
 	userId, err := uuid.NewUUID()
 	if err != nil {
@@ -51,12 +50,10 @@ func (u UserHandler) HandleSignUp(c echo.Context) error {
 	}
 
 	user := model.User{
-		UserId:    userId.String(),
+		Id:    userId.String(),
 		FullName:  req.FullName,
-		Email:    req.Email,
+		Username:    req.Username,
 		Password:  hash,
-		Role:      role,
-		Token:     "",
 	}
 
 	user, err = u.UserRepo.SaveUser(c.Request().Context(), user)

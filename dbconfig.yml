@@ -1,6 +1,6 @@
 development:
   dialect: postgres
-  datasource: host=localhost port=5432 user=huyuit password=astroboy19 dbname=c sslmode=disable
+  datasource: host=localhost port=5432 user=huyuit password=astroboy19 dbname=covi sslmode=disable
   dir: migrations
 
 #production:

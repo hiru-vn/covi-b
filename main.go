@@ -22,7 +22,7 @@ func main() {
 		Port: 5432,
 		UserName: "huyuit",
 		Password: "astroboy19",
-		DbName: "golang",
+		DbName: "covi",
 	}
 	sql.Connect()
 	e := echo.New()

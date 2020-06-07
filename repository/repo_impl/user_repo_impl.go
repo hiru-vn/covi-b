@@ -1,16 +1,15 @@
 package repo_impl
 
 import (
+	"context"
+	"covi-b/banana"
 	"covi-b/db"
 	"covi-b/log"
-	"covi-b/banana"
 	"covi-b/model"
 	"covi-b/model/req"
 	"covi-b/repository"
-	"context"
 	"database/sql"
 	"github.com/lib/pq"
-	"time"
 )
 
 type UserRepoImpl struct {
@@ -25,11 +24,9 @@ func NewUserRepo(sql *db.Sql) repository.UserRepo {
 
 func (u UserRepoImpl) SaveUser(context context.Context, user model.User) (model.User, error) {
 	statement := `
-		INSERT INTO "users"("user_id", "email", "password", "role", "full_name", "created_at", "updated_at")
-		VALUES(:user_id, :email, :password, :role, :full_name, :created_at, :updated_at)
+		INSERT INTO "USERS"("fullname", "username", "password")
+		VALUES(:fullname, :username, :password)
 	`
-	user.CreatedAt = time.Now()
-	user.UpdatedAt = time.Now()
 
 	_, err := u.sql.Db.NamedExecContext(context, statement, user)
 	if err != nil {
@@ -47,7 +44,7 @@ func (u UserRepoImpl) SaveUser(context context.Context, user model.User) (model.
 
 func (u *UserRepoImpl) CheckLogin(context context.Context, loginReq req.ReqSignIn) (model.User, error) {
 	var user = model.User{}
-	err := u.sql.Db.GetContext(context, &user, "SELECT * FROM users WHERE email=$1", loginReq.Email)
+	err := u.sql.Db.GetContext(context, &user, "SELECT * FROM USERS WHERE email=$1", loginReq.Email)
 
 
 	if err != nil {
