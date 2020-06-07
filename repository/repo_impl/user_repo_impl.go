@@ -59,3 +59,14 @@ func (u *UserRepoImpl) CheckLogin(context context.Context, loginReq req.ReqSignI
 	return user, nil
 
 }
+
+func (u *UserRepoImpl) UpdateUser(context context.Context, updateReq req.ReqUpdate) (model.User, error) {
+	var user = model.User{}
+	err := u.sql.Db.GetContext(context, &user, "UPDATE \"USERS\" SET phone = $1 , \"yearOfBirth\" = $2 , citycode = $3 , address = $4 where id=$5", updateReq.Phone, updateReq.YearOfBirth, updateReq.CityCode, updateReq.Address, updateReq.Id)
+
+	if err != nil {
+		print(err.Error())
+	}
+
+	return user, nil
+}
