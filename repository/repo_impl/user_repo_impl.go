@@ -9,6 +9,7 @@ import (
 	"covi-b/model/req"
 	"covi-b/repository"
 	"database/sql"
+	_ "database/sql"
 	"github.com/lib/pq"
 )
 
@@ -44,7 +45,7 @@ func (u UserRepoImpl) SaveUser(context context.Context, user model.User) (model.
 
 func (u *UserRepoImpl) CheckLogin(context context.Context, loginReq req.ReqSignIn) (model.User, error) {
 	var user = model.User{}
-	err := u.sql.Db.GetContext(context, &user, "SELECT * FROM USERS WHERE email=$1", loginReq.Email)
+	err := u.sql.Db.GetContext(context, &user, "SELECT * FROM \"USERS\" WHERE username=$1", loginReq.Username)
 
 
 	if err != nil {
