@@ -30,10 +30,14 @@ func main() {
 	userHandler := handler.UserHandler{
 		UserRepo: repo_impl.NewUserRepo(sql),
 	}
+	storeHandler := handler.StoreHandler{
+		StoreRepo: repo_impl.NewStoreRepo(sql),
+	}
 
 	api := router.API {
 		Echo:       e,
 		UserHandler: userHandler,
+		StoreHandler: storeHandler,
 	}
 	api.SetupRouter()
 

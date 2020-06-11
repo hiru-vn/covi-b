@@ -15,5 +15,5 @@ type User struct {
 	Citycode sql.NullString `json:"citycode, omitempty" db:"citycode, omitempty"`
 	Address sql.NullString `json:"address, omitempty" db:"address, omitempty"`
 	TransmissionLevel sql.NullString `json:"transmissionLevel, omitempty" db:"transmissionLevel, omitempty"`
-	IsInfected sql.NullString `json:"isInfected,omitempty" db:"isInfected,omitempty"`
+	IsInfected sql.NullBool `json:"isInfected,omitempty" db:"isInfected,omitempty"`
 }
