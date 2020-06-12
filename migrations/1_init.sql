@@ -40,16 +40,16 @@ CREATE TABLE "STORES" (
 
 CREATE TABLE "USERSTORE" (
 	"id" serial PRIMARY KEY,
-	"timein" timestamptz,
-	"timeout" timestamptz,
+	"timein" varchar,
+	"timeout" varchar,
 	"userid" serial,
 	"storeid" serial
 );
 
 CREATE TABLE "USERUSER"(
 	"id" serial PRIMARY KEY,
-	"timein" timestamptz,
-	"timeout" timestamptz,
+	"timein" varchar,
+	"timeout" varchar,
 	"long" real,
 	"lat" real,
 	"user1id" serial,
@@ -61,7 +61,7 @@ CREATE TABLE "INFECTEDCOORDINATE"(
 	"userid" serial,
 	"long" real,
 	"lat" real,
-	"date" timestamptz,
+	"date" varchar,
 	"citycode" int,
 	"address" varchar
 );
@@ -69,7 +69,7 @@ CREATE TABLE "INFECTEDCOORDINATE"(
 CREATE TABLE "NOTIFY"(
 	"id" serial PRIMARY KEY,
 	"userid" serial,
-	"time" timestamptz,
+	"time" varchar,
 	"title" varchar,
 	"content" text,
 	"type" varchar
