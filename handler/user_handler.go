@@ -7,7 +7,6 @@ import (
 	"covi-b/repository"
 	securiry "covi-b/security"
 	validator "github.com/go-playground/validator/v10"
-	uuid "github.com/google/uuid"
 	"github.com/labstack/echo"
 	"net/http"
 )
@@ -39,24 +38,13 @@ func (u UserHandler) HandleSignUp(c echo.Context) error {
 
 	hash := securiry.HashAndSalt([]byte(req.Password))
 
-	userId, err := uuid.NewUUID()
-	if err != nil {
-		log.Error(err.Error())
-		return c.JSON(http.StatusForbidden, model.Response{
-			StatusCode: http.StatusForbidden,
-			Message:    err.Error(),
-			Data:       nil,
-		})
-	}
-
 	user := model.User{
-		Id:    userId.String(),
 		FullName:  req.FullName,
 		Username:    req.Username,
 		Password:  hash,
 	}
 
-	user, err = u.UserRepo.SaveUser(c.Request().Context(), user)
+	user, err := u.UserRepo.SaveUser(c.Request().Context(), user)
 	if err != nil {
 		return c.JSON(http.StatusConflict, model.Response{
 			StatusCode: http.StatusConflict,

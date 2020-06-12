@@ -40,7 +40,19 @@ func (u UserRepoImpl) SaveUser(context context.Context, user model.User) (model.
 		return user, banana.SignUpFail
 	}
 
-	return user, nil
+	var newU = model.User{}
+	err2 := u.sql.Db.GetContext(context, &newU, "SELECT * FROM \"USERS\" WHERE username=$1", user.Username)
+
+
+	if err2 != nil {
+		if err2 == sql.ErrNoRows {
+			return newU, banana.UserNotFound
+		}
+		log.Error(err.Error())
+		return newU, err
+	}
+
+	return newU, nil
 }
 
 func (u *UserRepoImpl) CheckLogin(context context.Context, loginReq req.ReqSignIn) (model.User, error) {
