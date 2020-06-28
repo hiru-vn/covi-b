@@ -30,6 +30,7 @@ func (u UserStoreRepoImpl) Create(context context.Context, userstore model.UserS
 	if err != nil {
 		log.Error(err.Error())
 		if err, ok := err.(*pq.Error); ok {
+			log.Error(err.Error())
 			if err.Code.Name() == "unique_violation" {
 				return userstore, banana.UserConflict
 			}

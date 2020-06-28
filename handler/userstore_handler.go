@@ -5,18 +5,17 @@ import (
 	"covi-b/model"
 	req "covi-b/model/req"
 	"covi-b/repository"
-	securiry "covi-b/security"
 	validator "github.com/go-playground/validator/v10"
 	"github.com/labstack/echo"
 	"net/http"
 )
 
 type UserStoreHandler struct {
-	UserRepo repository.UserRepo
+	UserStoreRepo repository.UserStoreRepo
 }
 
 func (u UserStoreHandler) HandleCreate(c echo.Context) error {
-	req := req.ReqSignUp{}
+	req := req.ReqCreateUserStore{}
 	if err := c.Bind(&req); err != nil {
 		log.Error(err.Error())
 		return c.JSON(http.StatusBadRequest, model.Response{
@@ -36,15 +35,14 @@ func (u UserStoreHandler) HandleCreate(c echo.Context) error {
 		})
 	}
 
-	hash := securiry.HashAndSalt([]byte(req.Password))
-
-	user := model.User{
-		FullName:  req.FullName,
-		Username:    req.Username,
-		Password:  hash,
+	userstore := model.UserStore{
+		TimeIn:  req.TimeIn,
+		TimeOut:    req.TimeOut,
+		UserId:  req.UserId,
+		StoreId: req.StoreId,
 	}
 
-	user, err := u.UserRepo.SaveUser(c.Request().Context(), user)
+	userstore, err := u.UserStoreRepo.Create(c.Request().Context(), userstore)
 	if err != nil {
 		return c.JSON(http.StatusConflict, model.Response{
 			StatusCode: http.StatusConflict,
@@ -53,10 +51,9 @@ func (u UserStoreHandler) HandleCreate(c echo.Context) error {
 		})
 	}
 
-	user.Password = ""
 	return c.JSON(http.StatusOK, model.Response{
 		StatusCode: http.StatusOK,
 		Message:    "Xử lý thành công",
-		Data:       user,
+		Data:       userstore,
 	})
 }

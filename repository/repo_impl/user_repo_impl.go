@@ -74,7 +74,29 @@ func (u *UserRepoImpl) CheckLogin(context context.Context, loginReq req.ReqSignI
 
 func (u *UserRepoImpl) UpdateUser(context context.Context, updateReq req.ReqUpdate) (model.User, error) {
 	var user = model.User{}
-	err := u.sql.Db.GetContext(context, &user, "UPDATE \"USERS\" SET phone = $1 , \"yearOfBirth\" = $2 , citycode = $3 , address = $4 where id=$5", updateReq.Phone, updateReq.YearOfBirth, updateReq.CityCode, updateReq.Address, updateReq.Id)
+	err := u.sql.Db.GetContext(context, &user, "UPDATE \"USERS\" SET \"isInfected\" =false, phone = $1 , \"yearOfBirth\" = $2 , citycode = $3 , address = $4 where id=$5", updateReq.Phone, updateReq.YearOfBirth, updateReq.CityCode, updateReq.Address, updateReq.Id)
+
+	if err != nil {
+		print(err.Error())
+	}
+
+	return user, nil
+}
+
+func (u *UserRepoImpl) MarkInfected(context context.Context, markInfectedReq req.ReqMarkInfected) (model.User, error) {
+	var user = model.User{}
+	err := u.sql.Db.GetContext(context, &user, "UPDATE \"USERS\" SET \"isInfected\" =true where id=$1" , markInfectedReq.Id)
+
+	if err != nil {
+		print(err.Error())
+	}
+
+	return user, nil
+}
+
+func (u *UserRepoImpl) UnMarkInfected(context context.Context, markInfectedReq req.ReqMarkInfected) (model.User, error) {
+	var user = model.User{}
+	err := u.sql.Db.GetContext(context, &user, "UPDATE \"USERS\" SET \"isInfected\" = false where id=$1" , markInfectedReq.Id)
 
 	if err != nil {
 		print(err.Error())
