@@ -20,7 +20,7 @@ func (api *API) SetupRouter() {
 	api.Echo.POST("/user/markInfected", api.UserHandler.HandleMarkInfected)
 	api.Echo.POST("/user/unmarkInfected", api.UserHandler.HandleUnMarkInfected)
 	api.Echo.POST("/user/unmarkInfected", api.UserHandler.HandleUnMarkInfected)
-	api.Echo.POST("/user/getInfected", api.UserHandler.HandleGetInfected)
+	api.Echo.G("/user/getInfected", api.UserHandler.HandleGetInfected)
 
 	//store
 	api.Echo.GET("/store/get", api.StoreHandler.HandleGetStore)
