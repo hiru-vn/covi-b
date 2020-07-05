@@ -58,9 +58,17 @@ func (u UserRepoImpl) SaveUser(context context.Context, user model.User) (model.
 func (u *UserRepoImpl) CheckLogin(context context.Context, loginReq req.ReqSignIn) (model.User, error) {
 	var user = model.User{}
 	err := u.sql.Db.GetContext(context, &user, "SELECT * FROM \"USERS\" WHERE username=$1", loginReq.Username)
-
+	err2 := u.sql.Db.GetContext(context, &user, "UPDATE \"USERS\" SET \"long\" =$1, lat = $2 " , loginReq.Long, loginReq.Lat)
 
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return user, banana.UserNotFound
+		}
+		log.Error(err.Error())
+		return user, err
+	}
+
+	if err2 != nil {
 		if err == sql.ErrNoRows {
 			return user, banana.UserNotFound
 		}
@@ -103,4 +111,36 @@ func (u *UserRepoImpl) UnMarkInfected(context context.Context, markInfectedReq r
 	}
 
 	return user, nil
+}
+
+func (u *UserRepoImpl) UpdateRisk(context context.Context, addRiskReq req.ReqAddRisk) (model.User, error) {
+	var user = model.User{}
+	err := u.sql.Db.GetContext(context, &user, "SELECT * FROM \"USERS\" WHERE id=$1", addRiskReq.Id)
+
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return user, banana.UserNotFound
+		}
+		log.Error(err.Error())
+		
+		return user, err
+	}
+
+	return user, nil
+}
+
+func (u *UserRepoImpl) GetInfected(context context.Context) ([]model.User, error) {
+	var users []model.User
+	// Query the DB
+	err := u.sql.Db.Select(&users, "SELECT * FROM \"USERS\" WHERE \"isInfected\"=true;")
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return users, banana.DataNotFound
+		}
+		log.Error(err.Error())
+		return users, err
+	}
+
+	return users, nil
 }
