@@ -86,7 +86,7 @@ func (u *UserRepoImpl) CheckLogin(context context.Context, loginReq req.ReqSignI
 
 func (u *UserRepoImpl) UpdateUser(context context.Context, updateReq req.ReqUpdate) (model.User, error) {
 	var user = model.User{}
-	err := u.sql.Db.GetContext(context, &user, "UPDATE \"USERS\" SET \"isInfected\" =false, phone = $1 , \"yearOfBirth\" = $2 , citycode = $3 , address = $4 where id=$5", updateReq.Phone, updateReq.YearOfBirth, updateReq.CityCode, updateReq.Address, updateReq.Id)
+	err := u.sql.Db.GetContext(context, &user, "UPDATE \"USERS\" SET \"isInfected\" =false, phone = $1 , \"yearOfBirth\" = $2 , citycode = $3 , address = $4 , long = $5 , lat = $6 where id=$7", updateReq.Phone, updateReq.YearOfBirth, updateReq.CityCode, updateReq.Address, updateReq.Long, updateReq.Lat, updateReq.Id)
 
 	if err != nil {
 		print(err.Error())

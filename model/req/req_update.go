@@ -6,4 +6,6 @@ type ReqUpdate struct {
 	YearOfBirth int `json:"yearOfBirth,omitempty" validate:"required"` // tags
 	CityCode string `json:"citycode,omitempty" validate:"required"`
 	Address string `json:"address,omitempty" validate:"required"`
+	Long float64    `json:"long,omitempty" validate:"required"`
+	Lat float64    `json:"lat,omitempty" validate:"required"`
 }
