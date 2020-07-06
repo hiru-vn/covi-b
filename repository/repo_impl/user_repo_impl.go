@@ -58,7 +58,7 @@ func (u UserRepoImpl) SaveUser(context context.Context, user model.User) (model.
 func (u *UserRepoImpl) CheckLogin(context context.Context, loginReq req.ReqSignIn) (model.User, error) {
 	var user = model.User{}
 	err := u.sql.Db.GetContext(context, &user, "SELECT * FROM \"USERS\" WHERE username=$1", loginReq.Username)
-	res, err2 := u.sql.Db.Exec("UPDATE \"USERS\" SET \"long\" =$1 , \"lat\" = $2 " , loginReq.Long, loginReq.Lat)
+	res, err2 := u.sql.Db.Exec("UPDATE \"USERS\" SET \"long\" =$1 , \"lat\" = $2 where username=$3" , loginReq.Long, loginReq.Lat, loginReq.Username)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
