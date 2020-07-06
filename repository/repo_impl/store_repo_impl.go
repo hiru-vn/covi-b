@@ -9,6 +9,7 @@ import (
 	"covi-b/model/req"
 	"covi-b/repository"
 	"database/sql"
+	"github.com/lib/pq"
 )
 
 type StoreRepoImpl struct {
@@ -35,4 +36,25 @@ func (u *StoreRepoImpl) GetStore(context context.Context, getStoreRreq req.ReqGe
 	}
 
 	return store, nil
+}
+
+func (u *StoreRepoImpl) Create(context context.Context, createStore model.Store) (model.Store, error) {
+	statement := `
+		INSERT INTO "STORES"("code", "name", "isActive", "long", "lat", "address", "citycode")
+		VALUES(:code, :name , :isActive, :long, :lat, :address, :citycode)
+	`
+
+	_, err := u.sql.Db.NamedExecContext(context, statement, createStore)
+	if err != nil {
+		log.Error(err.Error())
+		if err, ok := err.(*pq.Error); ok {
+			log.Error(err.Error())
+			if err.Code.Name() == "unique_violation" {
+				return createStore, banana.UserConflict
+			}
+		}
+		return createStore, banana.DataNotFound
+	}
+
+	return createStore, nil
 }

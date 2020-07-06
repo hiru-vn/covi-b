@@ -24,6 +24,7 @@ func (api *API) SetupRouter() {
 
 	//store
 	api.Echo.GET("/store/get", api.StoreHandler.HandleGetStore)
+	api.Echo.POST("/store/create", api.StoreHandler.HandleCreate)
 
 	//userstore
 	api.Echo.POST("/userstore/create", api.UserStoreHandler.HandleCreate)
