@@ -1,4 +1,3 @@
-
 DROP TABLE "USERUSER";
 DROP TABLE "USERSTORE";
 DROP TABLE "NOTIFY";
@@ -8,76 +7,75 @@ DROP TABLE "USERS";
 DROP TABLE "CITY";
 
 CREATE TABLE "USERS" (
-  "id" serial PRIMARY KEY,
-  "username" varchar unique ,
-  "password" text,
-  "fullname" varchar,
-  "yearOfBirth" int,
-  "code" varchar,
-  "phone" varchar,
-  "citycode" int,
-  "long" real,
-  "lat" real,
-  "address" varchar,
-  "transmissionLevel" int,
-  "isInfected" bool
+"id" serial PRIMARY KEY,
+"username" varchar unique ,
+"password" text,
+"fullname" varchar,
+"yearOfBirth" int,
+"code" varchar,
+"phone" varchar,
+"citycode" int,
+"long" real,
+"lat" real,
+"address" varchar,
+"transmissionLevel" int,
+"isInfected" bool
 );
 
 CREATE TABLE "CITY" (
-  "id" int PRIMARY KEY,
-  "name" varchar,
-  "infectedCount" int,
-  "infectedLevel" int
+"id" int PRIMARY KEY,
+"name" varchar,
+"infectedCount" int,
+"infectedLevel" int
 );
 
 CREATE TABLE "STORES" (
-  "id" serial PRIMARY KEY,
-  "code" varchar,
-  "name" varchar,
-  "isActive" boolean,
-  "long" real,
-  "lat" real,
-  "address" varchar,
-  "citycode" int
+"id" serial PRIMARY KEY,
+"code" varchar,
+"name" varchar,
+"isActive" boolean,
+"long" real,
+"lat" real,
+"address" varchar,
+"citycode" int
 );
 
 CREATE TABLE "USERSTORE" (
-  "id" serial PRIMARY KEY,
-  "timein" varchar,
-  "timeout" varchar,
-  "userid" serial,
-  "storeid" serial
+"id" serial PRIMARY KEY,
+"timein" varchar,
+"timeout" varchar,
+"userid" serial,
+"storeid" serial
 );
 
 CREATE TABLE "USERUSER"(
-  "id" serial PRIMARY KEY,
-  "timein" varchar,
-  "timeout" varchar,
-  "long" real,
-  "lat" real,
-  "user1id" serial,
-  "user2id" serial
+"id" serial PRIMARY KEY,
+"timein" varchar,
+"timeout" varchar,
+"long" real,
+"lat" real,
+"user1id" serial,
+"user2id" serial
 );
 
 CREATE TABLE "INFECTEDCOORDINATE"(
-  "id" serial PRIMARY KEY,
-  "userid" serial,
-  "long" real,
-  "lat" real,
-  "date" varchar,
-  "citycode" int,
-  "address" varchar
+"id" serial PRIMARY KEY,
+"userid" serial,
+"long" real,
+"lat" real,
+"date" varchar,
+"citycode" int,
+"address" varchar
 );
 
 CREATE TABLE "NOTIFY"(
-  "id" serial PRIMARY KEY,
-  "userid" serial,
-  "time" varchar,
-  "title" varchar,
-  "content" text,
-  "type" varchar
+"id" serial PRIMARY KEY,
+"userid" serial,
+"time" varchar,
+"title" varchar,
+"content" text,
+"type" varchar
 );
-
 
 ALTER TABLE "USERS"
 ADD CONSTRAINT fk_users_city
@@ -124,7 +122,7 @@ ADD CONSTRAINT fk_notify_users
 FOREIGN KEY (userid)
 REFERENCES "USERS" (id);
 
-
+SELECT * FROM "USERS"
 
 INSERT into "CITY"(id, name) VALUES (92, 'Thành phố Cần Thơ');
 INSERT into "CITY"(id, name) VALUES (01, 'Thành phố Hà Nội');
@@ -178,26 +176,68 @@ INSERT into "CITY"(id, name) VALUES (34, 'Tỉnh Thái Bình');
 INSERT into "CITY"(id, name) VALUES (19, 'Tỉnh Thái Nguyên');
 INSERT into "CITY"(id, name) VALUES (46, 'Tỉnh Thừa Thiên Huế');
 
+-- UPDATE "USERS" set "transmissionLevel" = 0 where id = 3;
+
+-- UPDATE "USERS" set "transmissionLevel" = null where 3 = 3;
+-- UPDATE "USERS" set "isInfected" = false where 1 = 1;
+-- UPDATE "USERS" set "isInfected" = true where id =3;
+-- select * from "CITY"
+-- select * from "USERS"
+-- select count(*) from "USERS" where "transmissionLevel" is null
+-- select DISTINCT storeid from "USERSTORE" where userid = 3
+
 CREATE OR REPLACE FUNCTION updateUserRiskFunc()
 RETURNS trigger AS $$
 DECLARE
-curVal integer;
-checkMeet integer;
+r int;
+s int;
 BEGIN
-curVal := (SELECT "transmissionLevel" from "USERS" where id = NEW.id);
-if (curVal >= 5 or curVal <= 1) then
-return 0;
+if (NEW."transmissionLevel") < 5 then
+raise notice 'flag 1';
+FOR r IN
+SELECT DISTINCT storeid from "USERSTORE" where userid = NEW.id
+LOOP
+raise notice 'flag 2';
+FOR s IN
+SELECT DISTINCT userid from "USERSTORE"
+where storeid = r and userid != NEW.id
+LOOP
+raise notice 'flag 3';
+UPDATE "USERS"
+set "transmissionLevel" = NEW."transmissionLevel" + 1
+where id = s and (
+"transmissionLevel" >= NEW."transmissionLevel"
+or "transmissionLevel" is null
+);
+END LOOP;
+END LOOP;
 end if;
-if (curVal = null) then
-curVal := 5;
-end if;
-UPDATE "USERS" set "transmissionLevel" = curVal - 1 where id = $1;
-return 1;
+RETURN NEW;
 END
 $$ LANGUAGE plpgsql;
 
 DROP TRIGGER IF EXISTS updateUserRiskTrig ON "USERS";
 
 CREATE TRIGGER updateUserRiskTrig AFTER UPDATE ON "USERS"
-    FOR EACH ROW WHEN (NEW."transmissionLevel" != OLD."transmissionLevel")
-	EXECUTE PROCEDURE updateUserRiskFunc();
+FOR EACH ROW WHEN (1=1)
+EXECUTE PROCEDURE updateUserRiskFunc();
+
+CREATE OR REPLACE FUNCTION markInfectedFunc()
+RETURNS trigger AS $$
+DECLARE
+BEGIN
+UPDATE "USERS" set "transmissionLevel" = 0 where id = OLD.id;
+Update "CITY" set "infectedCount" =  "infectedCount"+1 WHERE id = NEW.citycode;
+RETURN NEW;
+END
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS markInfectedTrig ON "USERS";
+
+CREATE TRIGGER markInfectedTrig AFTER UPDATE ON "USERS"
+FOR EACH ROW WHEN
+(NEW."isInfected" != OLD."isInfected" and NEW."isInfected" = true)
+EXECUTE PROCEDURE markInfectedFunc();
+
+Update "CITY" set "infectedCount" = 0
+Update "CITY" set "infectedLevel" = 0

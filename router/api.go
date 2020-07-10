@@ -10,6 +10,7 @@ type API struct {
 	UserHandler handler.UserHandler
 	StoreHandler handler.StoreHandler
 	UserStoreHandler handler.UserStoreHandler
+	CityHandler handler.CityHandler
 }
 
 func (api *API) SetupRouter() {
@@ -29,4 +30,6 @@ func (api *API) SetupRouter() {
 	//userstore
 	api.Echo.POST("/userstore/create", api.UserStoreHandler.HandleCreate)
 
+	//city
+	api.Echo.GET("/city/getAll", api.CityHandler.HandleGetAll)
 }

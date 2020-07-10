@@ -36,12 +36,16 @@ func main() {
 	userstoreHandler := handler.UserStoreHandler{
 		UserStoreRepo: repo_impl.NewUserStoreRepo(sql),
 	}
+	cityHandler := handler.CityHandler{
+		CityRepo: repo_impl.NewCityRepo(sql),
+	}
 
 	api := router.API {
 		Echo:       e,
 		UserHandler: userHandler,
 		StoreHandler: storeHandler,
 		UserStoreHandler: userstoreHandler,
+		CityHandler: cityHandler,
 	}
 	api.SetupRouter()
 
