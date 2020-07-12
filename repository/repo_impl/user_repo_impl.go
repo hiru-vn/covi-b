@@ -148,3 +148,18 @@ func (u *UserRepoImpl) GetInfected(context context.Context) ([]model.User, error
 
 	return users, nil
 }
+
+func (u *UserRepoImpl) GetRiskEvent(context context.Context, getRiskEventReq req.ReqRiskEvent) ([]model.InfectedCoordinate, error) {
+	var data []model.InfectedCoordinate
+	// Query the DB
+	err := u.sql.Db.Select(&data, "select * from queryINFECTEDCOORDINATE($1)", getRiskEventReq.UserId)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return data, banana.DataNotFound
+		}
+		log.Error(err.Error())
+		return data, err
+	}
+
+	return data, nil
+}

@@ -14,4 +14,5 @@ type UserRepo interface {	SaveUser(context context.Context, user model.User) (mo
 	UpdateRisk(context context.Context, markInfectedReq req.ReqAddRisk) (model.User, error)
 	GetInfected(context context.Context) ([]model.User, error)
 	//GetUser(context context.Context, getStoreReq req.ReqGetStore) (model.Store, error)
+	GetRiskEvent(context context.Context, getRiskEventReq req.ReqRiskEvent) ([]model.InfectedCoordinate, error)
 }
