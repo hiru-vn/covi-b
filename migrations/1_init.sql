@@ -60,7 +60,11 @@ CREATE TABLE "USERUSER"(
 
 CREATE TABLE "INFECTEDCOORDINATE"(
 "id" serial PRIMARY KEY,
-"userid" serial,
+"user1id" serial,
+"user2id" serial,
+"storeid" serial,
+"user1infectlevel" int,
+"user2infectlevel" int,
 "long" real,
 "lat" real,
 "date" varchar,
@@ -108,9 +112,19 @@ FOREIGN KEY (user2id)
 REFERENCES "USERS" (id);
 
 ALTER TABLE "INFECTEDCOORDINATE"
-ADD CONSTRAINT fk_infectedcoordinate_user
-FOREIGN KEY (userid)
+ADD CONSTRAINT fk_infectedcoordinate_user2
+FOREIGN KEY (user2id)
 REFERENCES "USERS" (id);
+
+ALTER TABLE "INFECTEDCOORDINATE"
+ADD CONSTRAINT fk_infectedcoordinate_user1
+FOREIGN KEY (user1id)
+REFERENCES "USERS" (id);
+
+ALTER TABLE "INFECTEDCOORDINATE"
+ADD CONSTRAINT fk_infectedcoordinate_store
+FOREIGN KEY (storeid)
+REFERENCES "STORES" (id);
 
 ALTER TABLE "INFECTEDCOORDINATE"
 ADD CONSTRAINT fk_infectedcoordinate_city
@@ -121,8 +135,6 @@ ALTER TABLE "NOTIFY"
 ADD CONSTRAINT fk_notify_users
 FOREIGN KEY (userid)
 REFERENCES "USERS" (id);
-
-SELECT * FROM "USERS"
 
 INSERT into "CITY"(id, name) VALUES (92, 'Thành phố Cần Thơ');
 INSERT into "CITY"(id, name) VALUES (01, 'Thành phố Hà Nội');
@@ -175,3 +187,8 @@ INSERT into "CITY"(id, name) VALUES (38, 'Tỉnh Thanh Hóa');
 INSERT into "CITY"(id, name) VALUES (34, 'Tỉnh Thái Bình');
 INSERT into "CITY"(id, name) VALUES (19, 'Tỉnh Thái Nguyên');
 INSERT into "CITY"(id, name) VALUES (46, 'Tỉnh Thừa Thiên Huế');
+Update "CITY" set "infectedCount" = 0;
+Update "CITY" set "infectedLevel" = 0;
+update "USERS" set "isInfected" = false;
+update "USERS" set "transmissionLevel" = null;
+update "USERS" set "isInfected" = false;

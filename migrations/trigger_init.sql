@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION queryINFECTEDCOORDINATE(inputId integer) 
+CREATE OR REPLACE FUNCTION queryINFECTEDCOORDINATE(inputId integer)
 returns table (
 "id" int,
 "user1id" int,
@@ -28,6 +28,11 @@ DECLARE
 r int;
 s int;
 z int;
+long real;
+lat real;
+citycode int;
+address varchar;
+dateT varchar;
 BEGIN
 if (NEW."transmissionLevel") < 5 then
 raise notice 'flag 1';
@@ -46,14 +51,19 @@ where id = s and (
 "transmissionLevel" >= NEW."transmissionLevel"
 or "transmissionLevel" is null
 );
-z := (SELECT count(*) from "INFECTEDCOORDINATE" 
+z := (SELECT count(*) from "INFECTEDCOORDINATE"
 	  where user1id = NEW.id and user2id = s and storeid = r );
+address := (select address from "STORES" as store where store.id = r);
+long := (select long from "STORES" as store where store.id = r);
+lat := (select lat from "STORES" as store where store.id = r);
+citycode := (select citycode from "STORES" as store where store.id = r);
+-- dateT := (select * from "USERSTORE" as store where store.id = r  limit 1);
 if z = 0 then
-INSERT INTO "INFECTEDCOORDINATE" 
-("user1id", "user2id", "storeid", "user1infectlevel", 
- "user2infectlevel", "long" , "lat" , "citycode" , "address")
+INSERT INTO "INFECTEDCOORDINATE"
+("user1id", "user2id", "storeid", "user1infectlevel",
+ "user2infectlevel", "long" , "lat" , "citycode" , "address", "date")
 VALUES(NEW.id, s, r, NEW."transmissionLevel", NEW."transmissionLevel" + 1,
-	0,0,92, 'Hoa hue');
+	long, lat, citycode, address, dateT);
 END IF;
 END LOOP;
 END LOOP;
@@ -65,8 +75,8 @@ $$ LANGUAGE plpgsql;
 DROP TRIGGER IF EXISTS updateUserRiskTrig ON "USERS";
 
 CREATE TRIGGER updateUserRiskTrig AFTER UPDATE ON "USERS"
-FOR EACH ROW 
--- WHEN (NEW."transmissionLevel" = null or NEW."transmissionLevel" < OLD."transmissionLevel") 
+FOR EACH ROW
+-- WHEN (NEW."transmissionLevel" = null or NEW."transmissionLevel" < OLD."transmissionLevel")
 EXECUTE PROCEDURE updateUserRiskFunc();
 
 CREATE OR REPLACE FUNCTION markInfectedFunc()
@@ -82,7 +92,7 @@ $$ LANGUAGE plpgsql;
 DROP TRIGGER IF EXISTS markInfectedTrig ON "USERS";
 
 CREATE TRIGGER markInfectedTrig AFTER UPDATE ON "USERS"
-FOR EACH ROW 
+FOR EACH ROW
 WHEN (NEW."isInfected" != OLD."isInfected" and NEW."isInfected" = true)
 EXECUTE PROCEDURE markInfectedFunc();
 
