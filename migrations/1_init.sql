@@ -187,8 +187,25 @@ INSERT into "CITY"(id, name) VALUES (38, 'Tỉnh Thanh Hóa');
 INSERT into "CITY"(id, name) VALUES (34, 'Tỉnh Thái Bình');
 INSERT into "CITY"(id, name) VALUES (19, 'Tỉnh Thái Nguyên');
 INSERT into "CITY"(id, name) VALUES (46, 'Tỉnh Thừa Thiên Huế');
+
 Update "CITY" set "infectedCount" = 0;
 Update "CITY" set "infectedLevel" = 0;
 update "USERS" set "isInfected" = false;
 update "USERS" set "transmissionLevel" = null;
 update "USERS" set "isInfected" = false;
+
+VALUES ('ST00002', 'Familymart', true , 10.810599, 106.681477, '42 Hoa Huệ, Phú Nhuận, Tp Hồ chí Minh', 79);
+INSERT into "STORES"(code, name, "isActive", long, lat, address, citycode) 
+VALUES ('ST00003', 'Mini Stop', true , 10.874248, 106.418753, '12 Phổ Quang, Gò Vấp, Tp Hồ chí Minh', 79);
+INSERT into "STORES"(code, name, "isActive", long, lat, address, citycode) 
+VALUES ('ST00004', 'VinMart', true , 10.864148, 106.318753, '123A Trương Định, Quận 9, Tp Hồ chí Minh', 79);
+INSERT into "STORES"(code, name, "isActive", long, lat, address, citycode) 
+VALUES ('ST00005', 'Halo Halo', true , 10.894248, 106.728753, '12 Hiệp Bình Chánh, Thủ Đức, Tp Hồ chí Minh', 79);
+INSERT into "STORES"(code, name, "isActive", long, lat, address, citycode) 
+VALUES ('ST00006', 'Coopmart', true , 10.884248, 106.738753, '6 Mạc Đĩnh Chi Bến Nghé, Quận 1, Hồ Chí Minh', 79);
+INSERT into "STORES"(code, name, "isActive", long, lat, address, citycode) 
+VALUES ('ST00007', 'Phong Vũ', true , 10.874248, 106.748753, 'Hẻm 47 Trần Quốc Toản Phường 8, Quận 3, Hồ Chí Minh', 79);
+INSERT into "STORES"(code, name, "isActive", long, lat, address, citycode) 
+VALUES ('ST00008', 'Thế giới di động', true , 10.864248, 106.758753, '413 Đ. Lê Văn Sỹ Phường 12, Quận 3, Hồ Chí Minh', 79);
+INSERT into "STORES"(code, name, "isActive", long, lat, address, citycode) 
+VALUES ('ST00009', 'CellphoneS', true , 10.854248, 106.768753, '126 Hoàng Diệu, Thủ Đức, Tp Hồ chí Minh', 79);
