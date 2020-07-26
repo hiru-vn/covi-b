@@ -39,6 +39,9 @@ func main() {
 	cityHandler := handler.CityHandler{
 		CityRepo: repo_impl.NewCityRepo(sql),
 	}
+	notifyHandler := handler.NotifyHandler{
+		NotifyRepo: repo_impl.NewNotifyRepo(sql),
+	}
 
 	api := router.API {
 		Echo:       e,
@@ -46,6 +49,7 @@ func main() {
 		StoreHandler: storeHandler,
 		UserStoreHandler: userstoreHandler,
 		CityHandler: cityHandler,
+		NotifyHandler: notifyHandler,
 	}
 	api.SetupRouter()
 

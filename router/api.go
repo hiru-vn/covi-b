@@ -11,6 +11,7 @@ type API struct {
 	StoreHandler handler.StoreHandler
 	UserStoreHandler handler.UserStoreHandler
 	CityHandler handler.CityHandler
+	NotifyHandler handler.NotifyHandler
 }
 
 func (api *API) SetupRouter() {
@@ -33,4 +34,7 @@ func (api *API) SetupRouter() {
 
 	//city
 	api.Echo.GET("/city/getAll", api.CityHandler.HandleGetAll)
+
+	//notify
+	api.Echo.GET("/notify/getByUserid", api.NotifyHandler.HandleGetNotify)
 }

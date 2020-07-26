@@ -1,3 +1,20 @@
+CREATE OR REPLACE FUNCTION queryNOTIFY(idinput integer)
+returns table (
+"id" int,
+"userid" int,
+"time" varchar,
+"title" varchar,
+"content" text,
+"type" varchar
+) AS $$
+DECLARE
+r int;
+BEGIN
+	return QUERY (select * from "NOTIFY" as noti
+				  where noti."userid" = $1 or noti."type" = 'all');
+END
+$$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION queryINFECTEDCOORDINATE(inputId integer)
 returns table (
 "id" int,
