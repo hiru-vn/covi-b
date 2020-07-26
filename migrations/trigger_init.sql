@@ -53,11 +53,11 @@ or "transmissionLevel" is null
 );
 z := (SELECT count(*) from "INFECTEDCOORDINATE"
 	  where user1id = NEW.id and user2id = s and storeid = r );
-address := (select address from "STORES" as store where store.id = r);
-long := (select long from "STORES" as store where store.id = r);
-lat := (select lat from "STORES" as store where store.id = r);
-citycode := (select citycode from "STORES" as store where store.id = r);
--- dateT := (select * from "USERSTORE" as store where store.id = r  limit 1);
+address := (select store.address from "STORES" as store where store.id = r);
+long := (select store.long from "STORES" as store where store.id = r);
+lat := (select store.lat from "STORES" as store where store.id = r);
+citycode := (select store.citycode from "STORES" as store where store.id = r);
+dateT := (select store.timein from "USERSTORE" as store where store.id = 1  limit 1);
 if z = 0 then
 INSERT INTO "INFECTEDCOORDINATE"
 ("user1id", "user2id", "storeid", "user1infectlevel",
@@ -89,12 +89,28 @@ RETURN NEW;
 END
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION unMarkInfectedTrig()
+RETURNS trigger AS $$
+DECLARE
+BEGIN
+UPDATE "USERS" set "transmissionLevel" = null where id = OLD.id;
+Update "CITY" set "infectedCount" =  "infectedCount"-1 WHERE id = NEW.citycode;
+RETURN NEW;
+END
+$$ LANGUAGE plpgsql;
+
 DROP TRIGGER IF EXISTS markInfectedTrig ON "USERS";
+DROP TRIGGER IF EXISTS unMarkInfectedTrig ON "USERS";
 
 CREATE TRIGGER markInfectedTrig AFTER UPDATE ON "USERS"
 FOR EACH ROW
 WHEN (NEW."isInfected" != OLD."isInfected" and NEW."isInfected" = true)
 EXECUTE PROCEDURE markInfectedFunc();
+
+CREATE TRIGGER unMarkInfectedTrig AFTER UPDATE ON "USERS"
+FOR EACH ROW
+WHEN (NEW."isInfected" != OLD."isInfected" and NEW."isInfected" = false)
+EXECUTE PROCEDURE unMarkInfectedTrig();
 
 CREATE OR REPLACE FUNCTION updateCityInfectedLevelFunc()
 RETURNS trigger AS $$
