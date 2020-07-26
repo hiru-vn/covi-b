@@ -708,3 +708,49 @@ INSERT into "STORES"(code, name, "isActive", long, lat, address, citycode)
 VALUES ('ST00008', 'Thế giới di động', true , 10.864248, 106.758753, '413 Đ. Lê Văn Sỹ Phường 12, Quận 3, Hồ Chí Minh', 79);
 INSERT into "STORES"(code, name, "isActive", long, lat, address, citycode)
 VALUES ('ST00009', 'CellphoneS', true , 10.854248, 106.768753, '126 Hoàng Diệu, Thủ Đức, Tp Hồ chí Minh', 79);
+
+
+	   INSERT INTO "NOTIFY"
+("time", "title", "content", "type")
+VALUES('4/7/2019', 'Thông báo khẩn số 15', 
+	   ' </br> </br>
+	   <a href="https://tuoitre.vn/lich-trinh-di-lai-cua-benh-nhan-duong-tinh-voi-covid-19-tai-quang-ngai-20200726181315068.htm">  
+	   		   <img src="https://scontent.fsgn5-3.fna.fbcdn.net/v/t1.0-9/110235604_3150303071713525_2660290633543254575_n.jpg?_nc_cat=1&_nc_sid=8024bb&_nc_ohc=dGXNoasGJDkAX-E1xov&_nc_ht=scontent.fsgn5-3.fna&oh=6e214de9f53fe11f50d1e4f22e5ae1f5&oe=5F4430B2" id="img_ac5d31b0-cf30-11ea-81f1-91864e4a64d8" w="1866" h="1247" alt="Lịch trình đi lại của bệnh nhân dương tính với COVID-19 tại Quảng Ngãi - Ảnh 2." title="Lịch trình đi lại của bệnh nhân dương tính với COVID-19 tại Quảng Ngãi - Ảnh 2." rel="lightbox" photoid="ac5d31b0-cf30-11ea-81f1-91864e4a64d8" type="photo" style="max-width:100%;" data-original="https://cdn.tuoitre.vn/2020/7/26/dscf7129-15957618435431191888416.jpg" width="" height="" class="lightbox-content">
+	   </a>',
+	   'all');
+	   
+	   INSERT INTO "NOTIFY"
+("time", "title", "content", "type")
+VALUES('4/7/2019', 'KHẨN TRƯƠNG!', 
+	   ' </br> </br>
+	  	--- </br>
+Dịch COVID-19 đang diễn biến rất phức tạp ở nhiều nước trên thế giới và qua vụ việc có nhiều người Trung Quốc nhập cảnh trái phép vào Việt Nam, Phó Thủ tướng Thường trực Trương Hòa Bình yêu cầu:
+</br>
+🚧 Các bộ, ngành, địa phương khẩn trương tổ chức quán triệt, chỉ đạo các lực lượng chức năng nâng cao cảnh giác, đề cao hơn nữa trách nhiệm đối với cộng đồng, đất nước, kiên quyết không để xảy ra tình trạng có người nhập cảnh trái phép vào Việt Nam trong thời gian tới.
+
+---  </br>
+	   📋 Trên đây là một trong các nội dung Thông báo kết luận tại Hội nghị trực tuyến toàn quốc sơ kết công tác 6 tháng đầu 2020, phương hướng, nhiệm vụ thời gian tới của Ban Chỉ đạo 138/CP và 389 quốc gia:
+	   </br>
+	   <a href="https://bit.ly/ChongNCTP"> https://bit.ly/ChongNCTP </a>
+	    </br>
+	    </br>
+	   		   <img src="https://scontent.fsgn5-3.fna.fbcdn.net/v/t1.0-9/116264464_3150035565073609_914586961197277293_n.jpg?_nc_cat=1&_nc_sid=8024bb&_nc_ohc=br3HGJeMwrEAX_-P4q8&_nc_ht=scontent.fsgn5-3.fna&oh=05b93f4d27cd38fe8a499b4fbc229764&oe=5F41645A" />
+	   ','all');	   
+
+INSERT INTO "NOTIFY"
+("time", "title", "content", "type")
+VALUES('4/7/2019', 'Phát hiện ca nhiễm mới ở Đà Nẵng', 
+	   'Bộ T tế đã xét xác nhận ca nhiễm covid thứ 420 tại thành phố Đà Nẵng, </br> </br>
+	   <a href="https://tuoitre.vn/phat-hien-them-2-ca-covid-19-tai-da-nang-va-quang-ngai-viet-nam-co-420-ca-20200725063532228.htm"> Xem thêm... </a>
+	   </br>
+	   </br> <img src="https://cdn.tuoitre.vn/thumb_w/586/2020/7/26/bao-ngay-05-1595763243324221118856.jpg" id="img_52dbc370-cf32-11ea-bebd-f3ded52639a3" w="1500" h="1000" alt="Phát hiện thêm 2 ca COVID-19 tại Đà Nẵng và Quảng Ngãi, Việt Nam có 420 ca - Ảnh 1." title="Phát hiện thêm 2 ca COVID-19 tại Đà Nẵng và Quảng Ngãi, Việt Nam có 420 ca - Ảnh 1." rel="lightbox" photoid="52dbc370-cf32-11ea-bebd-f3ded52639a3" type="photo" data-original="https://cdn.tuoitre.vn/2020/7/26/bao-ngay-05-1595763243324221118856.jpg" width="" height="" class="lightbox-content">', 'all');
+	   
+	   
+	   INSERT INTO "NOTIFY"
+("time", "title", "content", "type")
+VALUES('4/7/2019', 'Lịch trình đi lại của bệnh nhân dương tính với COVID-19 tại Quảng Ngãi', 
+	   'TTO - Chiều 26-7, Bộ Y tế vừa công bố ca số 419 dương tính với COVID-19. Bệnh nhân là nam, 17 tuổi, ở phường Quảng Phú, TP Quảng Ngãi. </br> </br>
+	   <a href="https://tuoitre.vn/lich-trinh-di-lai-cua-benh-nhan-duong-tinh-voi-covid-19-tai-quang-ngai-20200726181315068.htm"> Xem thêm... </a>
+	   <img src="https://cdn.tuoitre.vn/thumb_w/586/2020/7/26/dscf7129-15957618435431191888416.jpg" id="img_ac5d31b0-cf30-11ea-81f1-91864e4a64d8" w="1866" h="1247" alt="Lịch trình đi lại của bệnh nhân dương tính với COVID-19 tại Quảng Ngãi - Ảnh 2." title="Lịch trình đi lại của bệnh nhân dương tính với COVID-19 tại Quảng Ngãi - Ảnh 2." rel="lightbox" photoid="ac5d31b0-cf30-11ea-81f1-91864e4a64d8" type="photo" style="max-width:100%;" data-original="https://cdn.tuoitre.vn/2020/7/26/dscf7129-15957618435431191888416.jpg" width="" height="" class="lightbox-content">
+	   </br> </br>',
+	   'all');
